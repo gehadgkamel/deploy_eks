@@ -9,7 +9,7 @@ resource "aws_iam_role" "eks_admin" {
       {
         "Effect" : "Allow",
         "Action" : "sts:AssumeRole",
-        "Principal" : { "AWS" : "arn:aws:iam::${data.aws.caller_identity.current.account_id}:root" }
+        "Principal" : { "AWS" : "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root" }
       }
     ]
   })
@@ -74,6 +74,7 @@ resource "aws_iam_policy" "eks_assume_admin" {
 resource "aws_iam_policy_attachment" "manager" {
   name       = aws_iam_user.manager.name
   policy_arn = aws_iam_policy.eks_assume_admin.arn
+  users = aws_iam_user.manager.*.name
 
 }
 
